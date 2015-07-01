@@ -1,4 +1,5 @@
 #include <launcher.h>
+#include <child_process.h>
 
 #include <base/env.h>
 #include <base/child.h>
@@ -14,7 +15,8 @@
 #include <os/config.h>
 #include <timer_session/connection.h>
 
-Launcher::Launcher()
+
+Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session())
 {
 
 }
@@ -29,7 +31,7 @@ void Launcher::init()
 
 }
 
-void Launcher::start_child(const char* filename, unsigned int ram_quota)
+ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota)
 {
 
   if (ram_quota >  Genode::env()->ram_session()->avail()) {
@@ -106,6 +108,17 @@ void Launcher::start_child(const char* filename, unsigned int ram_quota)
 	}
 
   //TODO: start the process here!!!!
+  Genode::printf("All seams good\n");
+
+  try {
+
+    return new (&_sliced_heap) ChildProcess();
+
+  } catch (Genode::Cpu_session::Thread_creation_failed) {
+    PWRN("Failed to create child - Cpu_session::Thread_creation_failed");
+  } catch (...) {
+    PWRN("Failed to create child - unknown reason");
+  }
 
 
   //cleanup
@@ -114,4 +127,5 @@ void Launcher::start_child(const char* filename, unsigned int ram_quota)
   Genode::env()->parent()->close(cpu.cap());
   Genode::env()->parent()->close(rom_cap);
 
+  return 0;
 }

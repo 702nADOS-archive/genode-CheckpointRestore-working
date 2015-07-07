@@ -141,63 +141,71 @@
 // 	return 0;
 // }
 #include <launcher.h>
+#include <base/sleep.h>
 
 int main(int argc, char const *argv[])
 {
+  PRINT_STUFF
   Launcher launcher;
-  launcher.start_child("cr_sub", 1024*1024);
+  launcher.start_child("cr_sub", 1024*1024*5);
+  Genode::sleep_forever();
+  // Genode::Service_registry _parent_services;
+  // if (_parent_services.find("RM"))
+  //   Genode::printf("Found service\n");
+  // else
+  //   Genode::printf("Mega fail\n");
   return 0;
 }
 
-int main1(int argc, char const *argv[]) {
-  PRINT_STUFF
-
-  Genode::Rom_session_capability file_cap;
-  file_cap = Genode::env()->parent()->session("ROM", "filename=sudi_sub, ram_quota=4M");
-  Genode::Rom_dataspace_capability ds_cap;
-  ds_cap = Genode::Rom_session_client(file_cap).dataspace();
-
-  PRINT_STUFF
-
-  void *elf_addr = Genode::env()->rm_session()->attach(ds_cap);
-
-  Genode::Rm_session_capability rm_cap;
-  rm_cap = Genode::env()->parent()->session("RM", "ram_quota=4M");
-  Genode::Rm_session_client rsc(rm_cap);
-
-  PRINT_STUFF
-
-  rsc.attach(ds_cap, Genode::Dataspace_client(ds_cap).size(), 0, true, elf_addr, true);
-
-  Genode::Ram_dataspace_capability rw_cap = Genode::env()->ram_session()->alloc(1024*1024*4);
-  //
-  void *sec_addr = Genode::env()->rm_session()->attach(rw_cap);
-  /* write to buffer at sec_addr */
-  Genode::env()->rm_session()->detach(sec_addr);
-
-  PRINT_STUFF
-
-
-  Genode::Cpu_session_capability cpu_cap = Genode::env()->parent()->session("CPU", "ram_quota=4M");
-  Genode::Cpu_session_client csc(cpu_cap);
-  Genode::Thread_capability thread_cap = csc.create_thread(2, "lol");
-
-  PRINT_STUFF
-
-  Genode::Pager_capability pager_cap = rsc.add_client(thread_cap);
-  csc.set_pager(thread_cap, pager_cap);
-
-  // PRINT_STUFF
-  //
-  // Genode::Pd_session_capability pd_cap = Genode::env()->parent()->session("PD", "ram_quota=1M");
-  // Genode::Pd_session_client pdsc(pd_cap);
-  //
-  // PRINT_STUFF
-  //
-  // pdsc.bind_thread(thread_cap);
-  //
-  // PRINT_STUFF
-  //
-  // csc.start(thread_cap, 0, 0);
-  return 0;
-}
+// int main1(int argc, char const *argv[]) {
+//   PRINT_STUFF
+//
+//   Genode::Rom_session_capability file_cap;
+//   file_cap = Genode::env()->parent()->session("ROM", "filename=sudi_sub, ram_quota=4M");
+//   Genode::Rom_dataspace_capability ds_cap;
+//   ds_cap = Genode::Rom_session_client(file_cap).dataspace();
+//
+//   PRINT_STUFF
+//
+//   void *elf_addr = Genode::env()->rm_session()->attach(ds_cap);
+//
+//   Genode::Rm_session_capability rm_cap;
+//   rm_cap = Genode::env()->parent()->session("RM", "ram_quota=4M");
+//   Genode::Rm_session_client rsc(rm_cap);
+//
+//   PRINT_STUFF
+//
+//   rsc.attach(ds_cap, Genode::Dataspace_client(ds_cap).size(), 0, true, elf_addr, true);
+//
+//   Genode::Ram_dataspace_capability rw_cap = Genode::env()->ram_session()->alloc(1024*1024*4);
+//   //
+//   void *sec_addr = Genode::env()->rm_session()->attach(rw_cap);
+//   /* write to buffer at sec_addr */
+//   Genode::env()->rm_session()->detach(sec_addr);
+//
+//   PRINT_STUFF
+//
+//
+//   Genode::Cpu_session_capability cpu_cap = Genode::env()->parent()->session("CPU", "ram_quota=4M");
+//   Genode::Cpu_session_client csc(cpu_cap);
+//   Genode::Thread_capability thread_cap = csc.create_thread(2, "lol");
+//
+//   PRINT_STUFF
+//
+//   Genode::Pager_capability pager_cap = rsc.add_client(thread_cap);
+//   csc.set_pager(thread_cap, pager_cap);
+//
+//   // PRINT_STUFF
+//   //
+//   // Genode::Pd_session_capability pd_cap = Genode::env()->parent()->session("PD", "ram_quota=1M");
+//   // Genode::Pd_session_client pdsc(pd_cap);
+//   //
+//   // PRINT_STUFF
+//   //
+//   // pdsc.bind_thread(thread_cap);
+//   //
+//   // PRINT_STUFF
+//   //
+//   // csc.start(thread_cap, 0, 0);
+//   return 0;
+// }

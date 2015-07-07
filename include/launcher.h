@@ -23,6 +23,9 @@ public:
 
 private:
   Genode::Sliced_heap _sliced_heap;
+  Genode::Cap_connection _cap_session;
+  Genode::Service_registry _parent_services;
+  Genode::Service_registry _child_services;
 };
 
 #endif

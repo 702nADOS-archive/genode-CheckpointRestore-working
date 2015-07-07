@@ -89,6 +89,7 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
   Genode::Rm_connection rm;
 	rm.on_destruction(Genode::Rm_connection::KEEP_OPEN);
 	if (!rm.cap().valid()) {
+    Genode::printf("FAILED RM SESSION\n");
 		PWRN("Failed to create RM session");
     Genode::env()->parent()->close(ram.cap());
     Genode::env()->parent()->close(cpu.cap());
@@ -111,8 +112,14 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
   Genode::printf("All seams good\n");
 
   try {
+    // return 0;
+    // use Genode::Dataspace_capability()
+    // Genode::Dataspace_connection ds_connection;
 
-    return new (&_sliced_heap) ChildProcess();
+    return new (&_sliced_heap) ChildProcess(unique_name, file_cap, pd.cap(), ram.cap(),
+                    cpu.cap(), rm.cap(), rom_cap,
+                    &_cap_session, &_parent_services, &_child_services,
+                    Genode::Dataspace_capability());
 
   } catch (Genode::Cpu_session::Thread_creation_failed) {
     PWRN("Failed to create child - Cpu_session::Thread_creation_failed");

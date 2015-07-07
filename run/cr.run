@@ -9,6 +9,7 @@ install_config {
     <service name="RM"/>
     <service name="ROM"/>
     <service name="CPU"/>
+    <service name="CAP"/>
     <service name="RAM"/>
     <service name="PD"/>
   </parent-provides>
@@ -18,9 +19,19 @@ install_config {
       <any-child/>
     </any-service>
   </default-route>
+
   <start name="sudi_test1">
     <binary name="cr_test"/>
-    <resource name="RAM" quantum="50M"/>
+    <resource name="RAM" quantum="10M"/>
+    <route>
+      <service name="LOG">  <parent/> </service>
+      <service name="RM">  <parent/> </service>
+      <service name="ROM">  <parent/> </service>
+      <service name="CPU">  <parent/> </service>
+      <service name="CAP">  <parent/> </service>
+      <service name="RAM">  <parent/> </service>
+      <service name="PD">  <parent/> </service>
+    </route>
   </start>
 </config>
 }
@@ -29,4 +40,5 @@ build_boot_image "core init cr_test cr_sub"
 
 append qemu_args "-nographic -m 64"
 
-run_genode_until {child "sudi_test1" exited with exit value 0} 10
+#run_genode_until {child "sudi_test2" exited with exit value 0} 10
+run_genode_until forever

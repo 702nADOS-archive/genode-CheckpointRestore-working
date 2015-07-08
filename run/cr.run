@@ -1,4 +1,4 @@
-build "core init cr_test cr_sub"
+build "core init drivers/timer cr_test cr_sub"
 
 create_boot_directory
 
@@ -36,7 +36,7 @@ install_config {
 </config>
 }
 
-build_boot_image "core init cr_test cr_sub"
+build_boot_image "core init timer cr_test cr_sub"
 
 append qemu_args "-nographic -m 64"
 

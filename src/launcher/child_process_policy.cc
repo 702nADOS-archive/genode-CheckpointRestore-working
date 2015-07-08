@@ -68,17 +68,17 @@ Genode::Service *ChildProcessPolicy::resolve_session_request(const char *service
   if ((service = _parent_services->find(service_name)))
     return service;
 
-  Genode::Client client;
-  service = _parent_services->wait_for_service(service_name, &client, name());
-  if (service == 0)
-    Genode::printf("Waiting was canceled: %s %s\n", service_name, args);
-  return service;
+  // Genode::Client client;
+  // service = _parent_services->wait_for_service(service_name, &client, name());
+  // if (service == 0)
+  //   Genode::printf("Waiting was canceled: %s %s\n", service_name, args);
+  // return service;
 
 
   // /* wait for the service to become available */
-  // Genode::Client client;
-  // return _child_services->wait_for_service(service_name,
-  //                                          &client, name());
+  Genode::Client client;
+  return _child_services->wait_for_service(service_name,
+                                           &client, name());
 }
 
 void ChildProcessPolicy::filter_session_args(const char *service, char *args,

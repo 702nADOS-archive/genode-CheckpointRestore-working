@@ -140,13 +140,14 @@
 //
 // 	return 0;
 // }
-#include <launcher.h>
+#include <launcher/launcher.h>
 #include <base/sleep.h>
 
 int main(int argc, char const *argv[])
 {
   PRINT_STUFF
   Launcher launcher;
+  launcher.init();
   launcher.start_child("cr_sub", 1024*1024*5);
   Genode::sleep_forever();
   // Genode::Service_registry _parent_services;

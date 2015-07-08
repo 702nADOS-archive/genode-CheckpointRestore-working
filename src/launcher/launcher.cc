@@ -19,6 +19,16 @@
 
 Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session())
 {
+
+}
+
+Launcher::~Launcher()
+{
+
+}
+
+void Launcher::init()
+{
   /* names of services provided by the parent */
   static const char *names[] = {
 
@@ -32,23 +42,11 @@ Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()-
     0 /* null-termination */
   };
   for (unsigned i = 0; names[i]; i++)
-    _parent_services.insert(new (Genode::env()->heap())
-                            Genode::Parent_service(names[i]));
-}
-
-Launcher::~Launcher()
-{
-
-}
-
-void Launcher::init()
-{
-
+    _parent_services.insert(new (Genode::env()->heap()) Genode::Parent_service(names[i]));
 }
 
 ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota)
 {
-
   if (ram_quota >  Genode::env()->ram_session()->avail()) {
 		PERR("Child's ram quota is higher than our available quota, using available quota");
 		ram_quota =  Genode::env()->ram_session()->avail() - 256*1000;

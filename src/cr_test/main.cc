@@ -1,32 +1,60 @@
-#include <base/printf.h>
-// #include <parent/parent.h>
-// #include <parent/client.h>
-// #include <parent/capability.h>
-#include <base/process.h>
-#include <base/env.h>
-// #include <rom_session/capability.h>
-#include <rom_session/client.h>
-
-#include <ram_session/capability.h>
-
-#include <cpu_session/capability.h>
-#include <cpu_session/client.h>
-
-#include <pd_session/capability.h>
-#include <pd_session/client.h>
-
-// #include <thread_session/capability.h>
-// #include <thread_session/client.h>
-
-#include <base/connection.h>
-#include <dataspace/client.h>
-#include <base/thread.h>
-#include <thread/capability.h>
-#include <pager/capability.h>
+// #include <base/printf.h>
+// // #include <parent/parent.h>
+// // #include <parent/client.h>
+// // #include <parent/capability.h>
+// #include <base/process.h>
+// #include <base/env.h>
+// // #include <rom_session/capability.h>
+// #include <rom_session/client.h>
+//
+// #include <ram_session/capability.h>
+//
+// #include <cpu_session/capability.h>
+// #include <cpu_session/client.h>
+//
+// #include <pd_session/capability.h>
+// #include <pd_session/client.h>
+//
+// // #include <thread_session/capability.h>
+// // #include <thread_session/client.h>
+//
+// #include <base/connection.h>
+// #include <dataspace/client.h>
+// #include <base/thread.h>
+// #include <thread/capability.h>
+// #include <pager/capability.h>
 
 // using namespace Genode;
 
+#include <base/printf.h>
+#include <launcher/launcher.h>
+#include <base/sleep.h>
+#include <timer_session/connection.h>
+
 #define PRINT_STUFF Genode::printf("Hello world from sudi_test: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->quota());
+
+int main(int argc, char const *argv[])
+{
+  PRINT_STUFF
+  Launcher launcher;
+  launcher.init();
+  ChildProcess* child = launcher.start_child("cr_sub", 1024*1024*5);
+
+  Timer::Connection timer;
+
+  while (1) {
+    PRINT_STUFF
+    timer.msleep(1000);
+  }
+
+  Genode::sleep_forever();
+  // Genode::Service_registry _parent_services;
+  // if (_parent_services.find("RM"))
+  //   Genode::printf("Found service\n");
+  // else
+  //   Genode::printf("Mega fail\n");
+  return 0;
+}
 
 // int start_child(char* filename, unsigned int ram_quota, Genode::Dataspace_capability config_ds)
 // {
@@ -140,23 +168,7 @@
 //
 // 	return 0;
 // }
-#include <launcher/launcher.h>
-#include <base/sleep.h>
 
-int main(int argc, char const *argv[])
-{
-  PRINT_STUFF
-  Launcher launcher;
-  launcher.init();
-  launcher.start_child("cr_sub", 1024*1024*5);
-  Genode::sleep_forever();
-  // Genode::Service_registry _parent_services;
-  // if (_parent_services.find("RM"))
-  //   Genode::printf("Found service\n");
-  // else
-  //   Genode::printf("Mega fail\n");
-  return 0;
-}
 
 // int main1(int argc, char const *argv[]) {
 //   PRINT_STUFF

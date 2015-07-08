@@ -27,9 +27,11 @@
 // using namespace Genode;
 
 #include <base/printf.h>
-#include <launcher/launcher.h>
 #include <base/sleep.h>
 #include <timer_session/connection.h>
+
+#include <launcher/launcher.h>
+#include <launcher/child_process.h>
 
 #define PRINT_STUFF Genode::printf("Hello world from sudi_test: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->quota());
 
@@ -44,7 +46,8 @@ int main(int argc, char const *argv[])
 
   while (1) {
     PRINT_STUFF
-    timer.msleep(1000);
+    timer.msleep(5000);
+    launcher.kill(child);
   }
 
   Genode::sleep_forever();

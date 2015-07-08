@@ -150,3 +150,26 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
 
   return 0;
 }
+
+void Launcher::kill(ChildProcess* child)
+{
+  Genode::Rm_session_capability   rm_session_cap = child->rm_session_cap();
+  Genode::Ram_session_capability ram_session_cap = child->ram_session_cap();
+  Genode::Cpu_session_capability cpu_session_cap = child->cpu_session_cap();
+  Genode::Rom_session_capability rom_session_cap = child->rom_session_cap();
+  Genode::Pd_session_capability  pd_session_cap  = child->pd_session_cap();
+
+	const Genode::Server *server = child->server();
+	// destroy(&_sliced_heap, child);
+
+	Genode::env()->parent()->close(rm_session_cap);
+  Genode::env()->parent()->close(cpu_session_cap);
+  Genode::env()->parent()->close(rom_session_cap);
+  Genode::env()->parent()->close(ram_session_cap);
+  Genode::env()->parent()->close(pd_session_cap);
+
+  // destroy(&_sliced_heap, child);
+
+  // delete child;
+
+}

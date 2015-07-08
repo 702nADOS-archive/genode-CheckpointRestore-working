@@ -16,12 +16,18 @@ ChildProcess::ChildProcess(const char                       *name,
                   _cpu(cpu),
                   _rm(rm),
                   _server(_ram),
+                  _pd(pd),
           				_entrypoint(cap_session, ENTRYPOINT_STACK_SIZE, name, false),
           				_policy(name, &_server, parent_services, child_services, config_ds, elf_ds, &_entrypoint),
           				_child(elf_ds, pd, ram, cpu, rm, &_entrypoint, &_policy)
 {
   _entrypoint.activate();
   Genode::printf("OK\n");
+}
+
+Genode::Pd_session_capability ChildProcess::pd_session_cap()
+{
+  return _pd;
 }
 
 Genode::Rom_session_capability ChildProcess::rom_session_cap()
@@ -62,4 +68,9 @@ Genode::Allocator* ChildProcess::heap()
 void ChildProcess::revoke_server(const Genode::Server *server)
 {
   _child.revoke_server(server);
+}
+
+void ChildProcess::exit()
+{
+  _child.exit(0);
 }

@@ -8,7 +8,7 @@
 #include <cap_session/connection.h>
 #include <init/child.h>
 
-#include <child_process_policy.h>
+#include "child_process_policy.h"
 
 class ChildProcess
 {
@@ -16,6 +16,7 @@ class ChildProcess
   Genode::Ram_session_capability _ram;
   Genode::Cpu_session_capability _cpu;
   Genode::Rm_session_capability  _rm;
+  Genode::Pd_session_capability  _pd;
   Genode::Server                 _server;
 
   /*
@@ -45,6 +46,7 @@ public:
   Genode::Ram_session_capability ram_session_cap();
   Genode::Cpu_session_capability cpu_session_cap();
   Genode::Rm_session_capability  rm_session_cap();
+  Genode::Pd_session_capability  pd_session_cap();
 
   const char* name() const;
 
@@ -53,6 +55,8 @@ public:
   Genode::Allocator* heap();
 
   void revoke_server(const Genode::Server *server);
+
+  void exit();
 };
 
 #endif

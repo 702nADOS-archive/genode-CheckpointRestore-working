@@ -14,11 +14,26 @@
 #include <rm_session/connection.h>
 #include <os/config.h>
 #include <timer_session/connection.h>
+#include <base/service.h>
 
 
 Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session())
 {
+  /* names of services provided by the parent */
+  static const char *names[] = {
 
+    /* core services */
+    "CAP", "RAM", "RM", "PD", "CPU", "IO_MEM", "IO_PORT",
+    "IRQ", "ROM", "LOG", "SIGNAL",
+
+    /* services expected to got started by init */
+    "Nitpicker", "Init", "Timer", "PCI", "Block", "Nic", "Rtc",
+
+    0 /* null-termination */
+  };
+  for (unsigned i = 0; names[i]; i++)
+    _parent_services.insert(new (Genode::env()->heap())
+                            Genode::Parent_service(names[i]));
 }
 
 Launcher::~Launcher()

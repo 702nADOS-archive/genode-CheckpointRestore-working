@@ -12,6 +12,10 @@ install_config {
     <service name="CAP"/>
     <service name="RAM"/>
     <service name="PD"/>
+    <service name="IO_MEM"/>
+    <service name="IO_PORT"/>
+    <service name="IRQ"/>
+    <service name="SIGNAL"/>
   </parent-provides>
   <default-route>
     <any-service>
@@ -20,18 +24,14 @@ install_config {
     </any-service>
   </default-route>
 
+  <start name="timer">
+		<resource name="RAM" quantum="1M"/>
+		<provides><service name="Timer"/></provides>
+	</start>
+
   <start name="sudi_test1">
     <binary name="cr_test"/>
     <resource name="RAM" quantum="10M"/>
-    <route>
-      <service name="LOG">  <parent/> </service>
-      <service name="RM">  <parent/> </service>
-      <service name="ROM">  <parent/> </service>
-      <service name="CPU">  <parent/> </service>
-      <service name="CAP">  <parent/> </service>
-      <service name="RAM">  <parent/> </service>
-      <service name="PD">  <parent/> </service>
-    </route>
   </start>
 </config>
 }

@@ -37,7 +37,8 @@ void Launcher::init()
     "IRQ", "ROM", "LOG", "SIGNAL",
 
     /* services expected to got started by init */
-    "Nitpicker", "Init", "Timer", "PCI", "Block", "Nic", "Rtc",
+    "Timer",
+    // "Nitpicker", "Init", "Timer", "PCI", "Block", "Nic", "Rtc",
 
     0 /* null-termination */
   };

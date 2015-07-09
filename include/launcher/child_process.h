@@ -47,6 +47,7 @@ public:
   Genode::Cpu_session_capability cpu_session_cap();
   Genode::Rm_session_capability  rm_session_cap();
   Genode::Pd_session_capability  pd_session_cap();
+  Genode::Thread_capability      thread_cap();
 
   const char* name() const;
 

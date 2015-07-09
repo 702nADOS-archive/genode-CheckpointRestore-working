@@ -21,6 +21,9 @@ public:
   void init();
   ChildProcess* start_child(const char* filename, unsigned int ram_quota);
   void kill(ChildProcess* child);
+  void single_step(ChildProcess* child, bool step);
+  void pause(ChildProcess* child);
+  void resume(ChildProcess* child);
 
 private:
   Genode::Sliced_heap _sliced_heap;

@@ -151,6 +151,28 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
   return 0;
 }
 
+void Launcher::single_step(ChildProcess* child, bool step)
+{
+  Genode::printf("Step child\n", step);
+  Genode::Cpu_session_client client(child->cpu_session_cap());
+  client.single_step(child->thread_cap(), step);
+
+}
+
+void Launcher::pause(ChildProcess* child)
+{
+  Genode::printf("Pause child\n");
+  Genode::Cpu_session_client client(child->cpu_session_cap());
+  client.pause(child->thread_cap());
+}
+
+void Launcher::resume(ChildProcess* child)
+{
+  Genode::printf("Resume child\n");
+  Genode::Cpu_session_client client(child->cpu_session_cap());
+  client.resume(child->thread_cap());
+}
+
 void Launcher::kill(ChildProcess* child)
 {
   Genode::Rm_session_capability   rm_session_cap = child->rm_session_cap();
@@ -169,6 +191,8 @@ void Launcher::kill(ChildProcess* child)
   Genode::env()->parent()->close(pd_session_cap);
 
   // destroy(&_sliced_heap, child);
+
+  //TODO: revoke server from other children so connections to them are closed
 
   // delete child;
 

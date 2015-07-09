@@ -50,6 +50,11 @@ Genode::Rm_session_capability ChildProcess::rm_session_cap()
   return _rm;
 }
 
+Genode::Thread_capability ChildProcess::thread_cap()
+{
+  return _child.main_thread_cap();
+}
+
 const char* ChildProcess::name() const
 {
   return _policy.name();

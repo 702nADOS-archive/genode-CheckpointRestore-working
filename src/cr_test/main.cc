@@ -44,18 +44,28 @@ int main(int argc, char const *argv[])
 
   Timer::Connection timer;
 
+  bool paused = false;
+  int runs = 0;
+
   while (1) {
     PRINT_STUFF
     timer.msleep(5000);
-    launcher.kill(child);
+    if (runs == 3)
+    {
+      launcher.kill(child);
+    } else if (runs < 3)
+    {
+      if (!paused)
+        launcher.pause(child);
+      else
+        launcher.resume(child);
+      paused = !paused;
+    }
+    runs++;
+    Genode::printf("This is launcher run: %i\n", runs);
   }
 
-  Genode::sleep_forever();
-  // Genode::Service_registry _parent_services;
-  // if (_parent_services.find("RM"))
-  //   Genode::printf("Found service\n");
-  // else
-  //   Genode::printf("Mega fail\n");
+  // Genode::sleep_forever();
   return 0;
 }
 

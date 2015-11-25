@@ -16,7 +16,6 @@
 #include <timer_session/connection.h>
 #include <base/service.h>
 
-
 Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session())
 {
 
@@ -173,6 +172,43 @@ void Launcher::resume(ChildProcess* child)
   client.resume(child->thread_cap());
 }
 
+Genode::Thread_state Launcher::thread_state(ChildProcess* child)
+{
+  pause(child);
+  Genode::Cpu_session_client client(child->cpu_session_cap());
+  Genode::Thread_state state = client.state(child->thread_cap());
+  // Genode::Ipc_pager native = (Genode::Ipc_pager)client.native_cap(child->thread_cap);
+  // native.get_regs(state);
+  //
+  // Genode::printf("Saved registers\n");
+  resume(child);
+  return state;
+}
+
+void Launcher::thread_state(ChildProcess* child, Genode::Thread_state state)
+{
+  pause(child);
+  Genode::Cpu_session_client client(child->cpu_session_cap());
+  client.state(child->thread_cap(), state);
+  resume(child);
+}
+
+ChildProcess* Launcher::clone(ChildProcess* origin)
+{
+  // go through threads with first then next on cpu session
+  Genode::Cpu_session_client client(origin->cpu_session_cap());
+  // Genode::Ram_dataspace_capability ram =  client.utcb(origin->thread_cap());
+  pause(origin);
+  Genode::Thread_state state = client.state(origin->thread_cap());
+
+  Genode::Ram_session_client ram(origin->ram_session_cap());
+  
+  Genode::printf("Origin is paused?: %s\n", state.paused ? "true":"false");
+
+  resume(origin);
+  return 0;
+}
+
 void Launcher::kill(ChildProcess* child)
 {
   Genode::Rm_session_capability   rm_session_cap = child->rm_session_cap();
@@ -194,6 +230,6 @@ void Launcher::kill(ChildProcess* child)
 
   //TODO: revoke server from other children so connections to them are closed
 
-  // delete child;
+  delete child;
 
 }

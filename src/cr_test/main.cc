@@ -44,23 +44,29 @@ int main(int argc, char const *argv[])
 
   Timer::Connection timer;
 
+  Genode::Thread_state state;
+
   bool paused = false;
   int runs = 0;
 
   while (1) {
     PRINT_STUFF
-    timer.msleep(5000);
+    timer.msleep(2000);
     if (runs == 3)
     {
-      launcher.kill(child);
-    } else if (runs < 3)
+      state = launcher.thread_state(child);
+    } else if (runs == 5)
     {
-      if (!paused)
-        launcher.pause(child);
-      else
-        launcher.resume(child);
-      paused = !paused;
+      launcher.thread_state(child, state);
     }
+    // else
+    // {
+    //   if (!paused)
+    //     launcher.pause(child);
+    //   else
+    //     launcher.resume(child);
+    //   paused = !paused;
+    // }
     runs++;
     Genode::printf("This is launcher run: %i\n", runs);
   }

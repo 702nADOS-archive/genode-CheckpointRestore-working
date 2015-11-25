@@ -25,6 +25,10 @@ public:
   void pause(ChildProcess* child);
   void resume(ChildProcess* child);
 
+  ChildProcess* clone(ChildProcess* origin);
+  Genode::Thread_state thread_state(ChildProcess* child);
+  void thread_state(ChildProcess* child, Genode::Thread_state state);
+
 private:
   Genode::Sliced_heap _sliced_heap;
   Genode::Cap_connection _cap_session;

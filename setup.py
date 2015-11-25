@@ -8,13 +8,13 @@ def print_usage():
 def run_config(name):
     print "Run module"
     command = "make run/"+name
-    os.system("(cd build.fiasco;"+command+")")
+    os.system("(cd build.foc_x86_32;"+command+")")
 def prepare_build():
     print "Setup build"
-    command = sys.argv[2]+"/tool/create_builddir fiasco_x86 BUILD_DIR=build.fiasco"
+    command = sys.argv[2]+"/tool/create_builddir foc_x86_32 BUILD_DIR=build.foc_x86_32"
     print "Execute: ", command
     os.system(command)
-    f = open('build.fiasco/etc/build.conf', 'a')
+    f = open('build.foc_x86_32/etc/build.conf', 'a')
     f.write("\n#Auto generated for ease of use\n")
     f.write("MAKE += -j4\n")
     f.write("\nREPOSITORIES += $(GENODE_DIR)/repos/libports\n")

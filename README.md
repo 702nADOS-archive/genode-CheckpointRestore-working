@@ -19,11 +19,11 @@ to install the toolchain.
 Now get your copy of Genode:
 
     git clone https://github.com/genodelabs/genode.git
-    (cd genode;git checkout 15.05)
+    (cd genode;git checkout 15.08)
 
 after this we will have to prepare some of the packages
 
-    (./genode/tool/ports/prepare_port fiasco)
+    (./genode/tool/ports/prepare_port foc)
     (./genode/tool/ports/prepare_port x86emu)
     (cd genode/repos/libports;make prepare)
     (cd genode/repos/ports;make prepare)

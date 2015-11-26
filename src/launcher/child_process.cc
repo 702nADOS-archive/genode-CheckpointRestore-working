@@ -19,10 +19,21 @@ ChildProcess::ChildProcess(const char                       *name,
                   _pd(pd),
           				_entrypoint(cap_session, ENTRYPOINT_STACK_SIZE, name, false),
           				_policy(name, &_server, parent_services, child_services, config_ds, elf_ds, &_entrypoint),
-          				_child(elf_ds, pd, ram, cpu, rm, &_entrypoint, &_policy)
+          				_child(elf_ds, pd, ram, cpu, rm, &_entrypoint, &_policy),
+                  _id(-1)
 {
   _entrypoint.activate();
   Genode::printf("OK\n");
+}
+
+void ChildProcess::setId(int id)
+{
+  _id = id;
+}
+
+int ChildProcess::getId()
+{
+  return _id;
 }
 
 Genode::Pd_session_capability ChildProcess::pd_session_cap()

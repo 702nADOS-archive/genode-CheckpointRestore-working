@@ -33,9 +33,45 @@
 #include <launcher/launcher.h>
 #include <launcher/child_process.h>
 
+#include <launcher_manager/session/connection.h>
+
 #define PRINT_STUFF Genode::printf("Hello world from sudi_test: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->quota());
 
 int main(int argc, char const *argv[])
+{
+  LauncherManager::Connection launcher;
+  launcher.say_hello();
+
+  Timer::Connection timer;
+
+  LauncherManager::Session::String name("cr_sub");
+
+  int child = launcher.create(name, 1024*1024*5);
+
+  bool paused = false;
+  int runs = 0;
+
+  while (1) {
+    PRINT_STUFF
+    timer.msleep(5000);
+    if (runs == 3)
+    {
+      launcher.kill(child);
+    }
+    else
+    {
+      if (!paused)
+        launcher.pause(child);
+      else
+        launcher.resume(child);
+      paused = !paused;
+    }
+    runs++;
+    Genode::printf("This is launcher run: %i\n", runs);
+  }
+}
+
+int amain(int argc, char const *argv[])
 {
   PRINT_STUFF
   Launcher launcher;

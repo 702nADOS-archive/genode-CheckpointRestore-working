@@ -10,7 +10,7 @@
 
 #include "child_process_policy.h"
 
-class ChildProcess
+class ChildProcess : public Genode::List<ChildProcess>::Element
 {
   Genode::Rom_session_capability _rom;
   Genode::Ram_session_capability _ram;
@@ -29,6 +29,8 @@ class ChildProcess
 
   ChildProcessPolicy     _policy;
   Genode::Child          _child;
+
+  int                    _id;
 public:
   ChildProcess(const char                       *name,
                   Genode::Dataspace_capability   elf_ds,
@@ -48,6 +50,10 @@ public:
   Genode::Rm_session_capability  rm_session_cap();
   Genode::Pd_session_capability  pd_session_cap();
   Genode::Thread_capability      thread_cap();
+
+  void setId(int id);
+
+  int getId();
 
   const char* name() const;
 

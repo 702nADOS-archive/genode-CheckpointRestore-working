@@ -1,4 +1,4 @@
-build "core init drivers/timer cr_test cr_sub"
+build "core init drivers/timer cr_test cr_sub launcher_manager"
 
 create_boot_directory
 
@@ -29,6 +29,12 @@ install_config {
 		<provides><service name="Timer"/></provides>
 	</start>
 
+  <start name="launcher_manager">
+     <binary name="launcher_manager"/>
+     <resource name="RAM" quantum="10M"/>
+     <provides><service name="LauncherManager"/></provides>
+   </start>
+
   <start name="sudi_test1">
     <binary name="cr_test"/>
     <resource name="RAM" quantum="10M"/>
@@ -36,7 +42,7 @@ install_config {
 </config>
 }
 
-build_boot_image "core init timer cr_test cr_sub"
+build_boot_image "core init timer cr_test cr_sub launcher_manager"
 
 append qemu_args "-nographic -m 64"
 

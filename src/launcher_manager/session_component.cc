@@ -1,6 +1,6 @@
 #include "session_component.h"
-
 #include <launcher/child_process.h>
+#include <base/printf.h>
 
 namespace LauncherManager {
   Session_component::Session_component()
@@ -13,7 +13,7 @@ namespace LauncherManager {
   {
   }
 
-  int Session_component::create(String& filename, unsigned int ram_quota)
+  int Session_component::create(String const & filename, unsigned int ram_quota)
   {
     // ChildProcess* child = launcher.start_child(filename, ram_quota);
     // _children.insert(child);

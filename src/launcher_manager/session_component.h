@@ -1,6 +1,7 @@
-#include <base/printf.h>
-#include <base/rpc_server.h>
+#ifndef _INCLUDE__LAUNCHER_MANAGER_SESSION_COMPONENT_H_
+#define _INCLUDE__LAUNCHER_MANAGER_SESSION_COMPONENT_H_
 
+#include <base/rpc_server.h>
 #include <launcher_manager/session.h>
 #include <launcher/launcher.h>
 
@@ -12,7 +13,7 @@ namespace LauncherManager {
     public:
       Session_component();
       virtual ~Session_component();
-      int create(String& filename, unsigned int ram_quota);
+      int create(String const & filename, unsigned int ram_quota);
       void kill(int process);
       void pause(int process);
       void resume(int process);
@@ -25,3 +26,4 @@ namespace LauncherManager {
       int _nextId;
   };
 }
+#endif

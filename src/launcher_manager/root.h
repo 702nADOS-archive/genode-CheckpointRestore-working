@@ -1,3 +1,6 @@
+#ifndef _INCLUDE__LAUNCHER_MANAGER_ROOT_H_
+#define _INCLUDE__LAUNCHER_MANAGER_ROOT_H_
+
 #include <base/printf.h>
 #include <root/component.h>
 
@@ -16,3 +19,4 @@ namespace LauncherManager {
       Root_component(Genode::Rpc_entrypoint *ep, Genode::Allocator      *allocator);
   };
 }
+#endif

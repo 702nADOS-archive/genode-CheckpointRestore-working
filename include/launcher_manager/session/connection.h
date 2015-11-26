@@ -1,3 +1,6 @@
+#ifndef _INCLUDE__LAUNCHER_MANAGER_CONNECTION_H_
+#define _INCLUDE__LAUNCHER_MANAGER_CONNECTION_H_
+
 #include <launcher_manager/session/client.h>
 #include <base/connection.h>
 
@@ -14,3 +17,4 @@ namespace LauncherManager {
       Session_client(cap()) { }
   };
 }
+#endif

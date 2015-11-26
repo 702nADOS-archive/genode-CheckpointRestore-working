@@ -1,3 +1,6 @@
+#ifndef _INCLUDE__LAUNCHER_MANAGER_CLIENT_H_
+#define _INCLUDE__LAUNCHER_MANAGER_CLIENT_H_
+
 #include <launcher_manager/session.h>
 #include <base/rpc_client.h>
 #include <base/printf.h>
@@ -11,7 +14,7 @@ namespace LauncherManager {
     {
     }
 
-    int create(String& filename, unsigned int ram_quota)
+    int create(String const & filename, unsigned int ram_quota)
     {
       return call<Rpc_create>(filename, ram_quota);
     }
@@ -38,3 +41,4 @@ namespace LauncherManager {
     }
   };
 }
+#endif

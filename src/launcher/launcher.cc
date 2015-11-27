@@ -129,7 +129,7 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
     // use Genode::Dataspace_capability()
     // Genode::Dataspace_connection ds_connection;
 
-    return new (&_sliced_heap) ChildProcess(unique_name, file_cap, pd.cap(), ram.cap(),
+    return new (_sliced_heap) ChildProcess(unique_name, file_cap, pd.cap(), ram.cap(),
                     cpu.cap(), rm.cap(), rom_cap,
                     &_cap_session, &_parent_services, &_child_services,
                     Genode::Dataspace_capability());
@@ -202,7 +202,7 @@ ChildProcess* Launcher::clone(ChildProcess* origin)
   Genode::Thread_state state = client.state(origin->thread_cap());
 
   Genode::Ram_session_client ram(origin->ram_session_cap());
-  
+
   Genode::printf("Origin is paused?: %s\n", state.paused ? "true":"false");
 
   resume(origin);
@@ -220,16 +220,24 @@ void Launcher::kill(ChildProcess* child)
 	const Genode::Server *server = child->server();
 	// destroy(&_sliced_heap, child);
 
+  // child->close(rm_session_cap);
+  // child->close(cpu_session_cap);
+  // child->close(rom_session_cap);
+  // child->close(ram_session_cap);
+  // child->close(pd_session_cap);
+
 	Genode::env()->parent()->close(rm_session_cap);
   Genode::env()->parent()->close(cpu_session_cap);
   Genode::env()->parent()->close(rom_session_cap);
   Genode::env()->parent()->close(ram_session_cap);
   Genode::env()->parent()->close(pd_session_cap);
 
-  // destroy(&_sliced_heap, child);
+  child->exit();
+
+  // destroy(_sliced_heap, child);
 
   //TODO: revoke server from other children so connections to them are closed
 
-  delete child;
+  _sliced_heap.free(child, sizeof(ChildProcess));
 
 }

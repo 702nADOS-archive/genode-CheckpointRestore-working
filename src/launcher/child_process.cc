@@ -1,4 +1,7 @@
 #include <child_process.h>
+#include <base/service.h>
+#include <base/process.h>
+#include <session/capability.h>
 
 ChildProcess::ChildProcess(const char                       *name,
                 Genode::Dataspace_capability   elf_ds,
@@ -84,6 +87,11 @@ Genode::Allocator* ChildProcess::heap()
 void ChildProcess::revoke_server(const Genode::Server *server)
 {
   _child.revoke_server(server);
+}
+
+void ChildProcess::close(Genode::Session_capability cap)
+{
+  _child.close(cap);
 }
 
 void ChildProcess::exit()

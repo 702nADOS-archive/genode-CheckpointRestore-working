@@ -63,6 +63,8 @@ public:
 
   void revoke_server(const Genode::Server *server);
 
+  void close(Genode::Session_capability cap);
+
   void exit();
 };
 

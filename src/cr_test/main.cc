@@ -40,28 +40,38 @@ int main(int argc, char const *argv[])
 
   Timer::Connection timer;
 
-  LauncherManager::Session::String name("cr_sub");
-
-  int child = launcher.createChild(name, 1024*1024*5);
+  int child = 0;//launcher.createChild("cr_sub", 1024*1024*5);
 
   bool paused = false;
   int runs = 0;
 
   while (1) {
     PRINT_STUFF
-    timer.msleep(5000);
-    if (runs == 3)
-    {
-      launcher.kill(child);
-    }
-    else
-    {
-      if (!paused)
-        launcher.pause(child);
-      else
-        launcher.resume(child);
-      paused = !paused;
-    }
+    // timer.msleep(200);
+    // if (runs%2 == 0) {
+    //   child = launcher.createChild("cr_sub", 1024*1024);
+    // } else if (runs%3 == 0) {
+    //   launcher.kill(child);
+    // }
+    int child1 = launcher.createChild("cr_sub", 1024*1024);
+    timer.msleep(500);
+    launcher.pause(child1);
+    launcher.kill(child1);
+
+    // if (runs == 3)
+    // {
+    //   Genode::printf("Before kill\n");
+    //   launcher.kill(child);
+    //   Genode::printf("After kill\n");
+    // }
+    // else
+    // {
+    //   if (!paused)
+    //     launcher.pause(child);
+    //   else
+    //     launcher.resume(child);
+    //   paused = !paused;
+    // }
     runs++;
     Genode::printf("This is launcher run: %i\n", runs);
   }

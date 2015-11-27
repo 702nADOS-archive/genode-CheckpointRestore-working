@@ -37,7 +37,7 @@ install_config {
 
   <start name="sudi_test1">
     <binary name="cr_test"/>
-    <resource name="RAM" quantum="10M"/>
+    <resource name="RAM" quantum="1M"/>
   </start>
 </config>
 }

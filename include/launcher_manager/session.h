@@ -19,6 +19,8 @@ namespace LauncherManager {
     virtual void pause(int process) = 0;
     virtual void resume(int process) = 0;
 
+    //
+
     // Register functions
     GENODE_RPC(Rpc_createChild, int, createChild, String const &, unsigned int);
     GENODE_RPC(Rpc_kill, void, kill, int);

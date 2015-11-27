@@ -72,6 +72,48 @@ namespace LauncherManager {
     Genode::printf("Ram usage: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->avail());
   }
 
+  void Session_component::pushThreadState(int process)
+  {
+    ChildProcess* child = _children.first();
+    while(child != NULL)
+    {
+      if (child->getId() == process) {
+        pushedThreadState = launcher.thread_state(child);
+        Genode::printf("ThreadState: %i\n", pushedThreadState.sp);
+        // addr_t ip     = 0;   /* instruction pointer */16820189
+      	// addr_t sp     = 0;   /* stack pointer       */1074789704
+      	// addr_t edi    = 0;
+      	// addr_t esi    = 0;
+      	// addr_t ebp    = 0;
+      	// addr_t ebx    = 0;
+      	// addr_t edx    = 0;
+      	// addr_t ecx    = 0;
+      	// addr_t eax    = 0;
+      	// addr_t gs     = 0;
+      	// addr_t fs     = 0;
+      	// addr_t eflags = 0;
+      	// addr_t trapno = 0;
+        child = NULL;
+      } else {
+        child = child->next();
+      }
+    }
+  }
+
+  void Session_component::popThreadState(int process)
+  {
+    ChildProcess* child = _children.first();
+    while(child != NULL)
+    {
+      if (child->getId() == process) {
+        launcher.thread_state(child, pushedThreadState);
+        child = NULL;
+      } else {
+        child = child->next();
+      }
+    }
+  }
+
   void Session_component::say_hello()
   {
     PDBG("I am here... Hello.");

@@ -18,12 +18,18 @@ namespace LauncherManager {
       void pause(int process);
       void resume(int process);
 
+      void pushThreadState(int process);
+      void popThreadState(int process);
+
       void say_hello();
     protected:
       Launcher launcher;
 
       Genode::List<ChildProcess> _children;
       int _nextId;
+
+      //pushed thread state
+      Genode::Thread_state pushedThreadState;
   };
 }
 #endif

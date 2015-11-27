@@ -34,6 +34,16 @@ namespace LauncherManager {
       call<Rpc_resume>(process);
     }
 
+    void pushThreadState(int process)
+    {
+      call<Rpc_pushThreadState>(process);
+    }
+
+    void popThreadState(int process)
+    {
+      call<Rpc_popThreadState>(process);
+    }
+
     void say_hello()
     {
       PDBG("Saying Hello.");

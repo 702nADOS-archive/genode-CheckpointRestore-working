@@ -45,7 +45,8 @@ int main(int argc, char const *argv[])
   bool paused = false;
   int runs = 0;
 
-  while (1) {
+  // while (1)
+  {
     PRINT_STUFF
     // timer.msleep(200);
     // if (runs%2 == 0) {
@@ -55,7 +56,13 @@ int main(int argc, char const *argv[])
     // }
     int child1 = launcher.createChild("cr_sub", 1024*1024);
     timer.msleep(500);
-    launcher.pause(child1);
+    launcher.pushThreadState(child1);
+    launcher.kill(child1);
+
+    child1 = launcher.createChild("cr_sub", 1024*1024);
+    timer.msleep(200);
+    launcher.popThreadState(child1);
+    timer.msleep(500);
     launcher.kill(child1);
 
     // if (runs == 3)

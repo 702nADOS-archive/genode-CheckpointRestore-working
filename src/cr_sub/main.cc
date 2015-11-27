@@ -12,7 +12,7 @@ int main(int argc, char const *argv[]) {
   {
     Genode::printf("Hey i am a child at: %i\n", counter);
     counter++;
-    timer.msleep(100);
+    timer.msleep(200);
   }
   return 0;
 }

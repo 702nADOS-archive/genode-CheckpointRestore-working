@@ -14,9 +14,9 @@ namespace LauncherManager {
     {
     }
 
-    int create(String const & filename, unsigned int ram_quota)
+    int createChild(String const & filename, unsigned int ram_quota)
     {
-      return call<Rpc_create>(filename, ram_quota);
+      return call<Rpc_createChild>(filename, ram_quota);
     }
 
     void kill(int process)

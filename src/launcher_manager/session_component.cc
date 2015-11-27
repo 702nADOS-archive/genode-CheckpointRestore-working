@@ -13,12 +13,12 @@ namespace LauncherManager {
   {
   }
 
-  int Session_component::create(String const & filename, unsigned int ram_quota)
+  int Session_component::createChild(String const & filename, unsigned int ram_quota)
   {
-    // ChildProcess* child = launcher.start_child(filename, ram_quota);
-    // _children.insert(child);
-    // child->setId(_nextId++);
-    return 0;//child->getId();
+    ChildProcess* child = launcher.start_child(filename.string(), ram_quota);
+    _children.insert(child);
+    child->setId(_nextId++);
+    return child->getId();
   }
 
   void Session_component::kill(int process)

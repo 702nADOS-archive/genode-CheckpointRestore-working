@@ -13,7 +13,7 @@ namespace LauncherManager {
     public:
       Session_component();
       virtual ~Session_component();
-      int create(String const & filename, unsigned int ram_quota);
+      int createChild(String const & filename, unsigned int ram_quota);
       void kill(int process);
       void pause(int process);
       void resume(int process);

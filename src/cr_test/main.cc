@@ -29,10 +29,6 @@
 #include <base/printf.h>
 #include <base/sleep.h>
 #include <timer_session/connection.h>
-
-#include <launcher/launcher.h>
-#include <launcher/child_process.h>
-
 #include <launcher_manager/session/connection.h>
 
 #define PRINT_STUFF Genode::printf("Hello world from sudi_test: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->quota());
@@ -46,7 +42,7 @@ int main(int argc, char const *argv[])
 
   LauncherManager::Session::String name("cr_sub");
 
-  int child = launcher.create(name, 1024*1024*5);
+  int child = launcher.createChild(name, 1024*1024*5);
 
   bool paused = false;
   int runs = 0;
@@ -69,46 +65,6 @@ int main(int argc, char const *argv[])
     runs++;
     Genode::printf("This is launcher run: %i\n", runs);
   }
-}
-
-int amain(int argc, char const *argv[])
-{
-  PRINT_STUFF
-  Launcher launcher;
-  launcher.init();
-  ChildProcess* child = launcher.start_child("cr_sub", 1024*1024*5);
-
-  Timer::Connection timer;
-
-  Genode::Thread_state state;
-
-  bool paused = false;
-  int runs = 0;
-
-  while (1) {
-    PRINT_STUFF
-    timer.msleep(2000);
-    if (runs == 3)
-    {
-      state = launcher.thread_state(child);
-    } else if (runs == 5)
-    {
-      launcher.thread_state(child, state);
-    }
-    // else
-    // {
-    //   if (!paused)
-    //     launcher.pause(child);
-    //   else
-    //     launcher.resume(child);
-    //   paused = !paused;
-    // }
-    runs++;
-    Genode::printf("This is launcher run: %i\n", runs);
-  }
-
-  // Genode::sleep_forever();
-  return 0;
 }
 
 // int start_child(char* filename, unsigned int ram_quota, Genode::Dataspace_capability config_ds)

@@ -33,15 +33,20 @@ void ChildProcess::start()
   _entrypoint.activate();
 }
 
-void ChildProcess::start_forked_main_thread(addr_t ip, addr_t sp, addr_t parent_cap_addr)
+void ChildProcess::start_forked_main_thread(Genode::addr_t ip, Genode::addr_t sp, Genode::addr_t parent_cap_addr)
 {
+  _entrypoint.activate();
+
+  return;
   /* poke parent_cap_addr into child's address space */
-  Capability<Parent> const &cap = _child.parent_cap();
-  Capability<Parent>::Raw   raw = { cap.dst(), cap.local_name() };
-  _rm.poke(parent_cap_addr, &raw, sizeof(raw));
+  Genode::Capability<Genode::Parent> const &cap = _child.parent_cap();
+  Genode::Capability<Genode::Parent>::Raw   raw = { cap.dst(), cap.local_name() };
+  // _rm.poke(parent_cap_addr, &raw, sizeof(raw));
 
   /* start execution of new main thread at supplied trampoline */
-  _cpu.start_main_thread(ip, sp);
+  Genode::Cpu_session_client cpu(_cpu);
+  // cpu.create_thread(size_t quota, Name const &name, addr_t utcb = 0)
+  cpu.start(cpu.create_thread(0, _policy.name()), ip, sp);
 }
 
 void ChildProcess::setId(int id)

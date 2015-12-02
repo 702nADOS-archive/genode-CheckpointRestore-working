@@ -46,5 +46,5 @@ build_boot_image "core init timer cr_test cr_sub launcher_manager"
 
 append qemu_args "-nographic -m 64"
 
-run_genode_until {child "sudi_test1" exited with exit value 0} 10
-#run_genode_until forever
+#run_genode_until {child "sudi_test1" exited with exit value 0} 10
+run_genode_until forever

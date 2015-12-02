@@ -1,5 +1,6 @@
 #include <launcher.h>
 #include <child_process.h>
+#include "child_destructor.h"
 
 #include <base/env.h>
 #include <base/child.h>
@@ -15,6 +16,7 @@
 #include <os/config.h>
 #include <timer_session/connection.h>
 #include <base/service.h>
+
 
 Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session())
 {
@@ -218,13 +220,8 @@ void Launcher::kill(ChildProcess* child)
   Genode::Pd_session_capability  pd_session_cap  = child->pd_session_cap();
 
 	const Genode::Server *server = child->server();
-	// destroy(&_sliced_heap, child);
 
-  // child->close(rm_session_cap);
-  // child->close(cpu_session_cap);
-  // child->close(rom_session_cap);
-  // child->close(ram_session_cap);
-  // child->close(pd_session_cap);
+  destruct_child(&_sliced_heap, child, 0, 500);
 
 	Genode::env()->parent()->close(rm_session_cap);
   Genode::env()->parent()->close(cpu_session_cap);
@@ -232,12 +229,11 @@ void Launcher::kill(ChildProcess* child)
   Genode::env()->parent()->close(ram_session_cap);
   Genode::env()->parent()->close(pd_session_cap);
 
-  child->exit();
-
+  // child->exit();
   // destroy(_sliced_heap, child);
+  // _sliced_heap.free(child, sizeof(ChildProcess));
 
   //TODO: revoke server from other children so connections to them are closed
 
-  _sliced_heap.free(child, sizeof(ChildProcess));
 
 }

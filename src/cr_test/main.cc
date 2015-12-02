@@ -45,7 +45,7 @@ int main(int argc, char const *argv[])
   bool paused = false;
   int runs = 0;
 
-  // while (1)
+  while (1)
   {
     PRINT_STUFF
     // timer.msleep(200);

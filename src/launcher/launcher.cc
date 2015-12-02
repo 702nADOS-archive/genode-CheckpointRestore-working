@@ -131,10 +131,12 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
     // use Genode::Dataspace_capability()
     // Genode::Dataspace_connection ds_connection;
 
-    return new (_sliced_heap) ChildProcess(unique_name, file_cap, pd.cap(), ram.cap(),
+    ChildProcess* new_child = new (_sliced_heap) ChildProcess(unique_name, file_cap, pd.cap(), ram.cap(),
                     cpu.cap(), rm.cap(), rom_cap,
                     &_cap_session, &_parent_services, &_child_services,
                     Genode::Dataspace_capability());
+
+    // new_child->start();
 
   } catch (Genode::Cpu_session::Thread_creation_failed) {
     PWRN("Failed to create child - Cpu_session::Thread_creation_failed");

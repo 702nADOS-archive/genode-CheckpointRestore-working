@@ -51,6 +51,8 @@ public:
   Genode::Pd_session_capability  pd_session_cap();
   Genode::Thread_capability      thread_cap();
 
+  void start();
+
   void setId(int id);
 
   int getId();

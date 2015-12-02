@@ -25,8 +25,12 @@ ChildProcess::ChildProcess(const char                       *name,
           				_child(elf_ds, pd, ram, cpu, rm, &_entrypoint, &_policy),
                   _id(-1)
 {
-  _entrypoint.activate();
   Genode::printf("OK\n");
+}
+
+void ChildProcess::start()
+{
+  _entrypoint.activate();
 }
 
 void ChildProcess::setId(int id)

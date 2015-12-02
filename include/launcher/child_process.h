@@ -52,6 +52,8 @@ public:
   Genode::Thread_capability      thread_cap();
 
   void start();
+  
+  void start_forked_main_thread(addr_t ip, addr_t sp, addr_t parent_cap_addr);
 
   void setId(int id);
 

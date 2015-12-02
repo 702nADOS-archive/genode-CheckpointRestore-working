@@ -136,7 +136,8 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
                     &_cap_session, &_parent_services, &_child_services,
                     Genode::Dataspace_capability());
 
-    // new_child->start();
+    new_child->start();
+    return new_child;
 
   } catch (Genode::Cpu_session::Thread_creation_failed) {
     PWRN("Failed to create child - Cpu_session::Thread_creation_failed");

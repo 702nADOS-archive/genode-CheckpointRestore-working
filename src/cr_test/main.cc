@@ -59,10 +59,15 @@ int main(int argc, char const *argv[])
     launcher.pushThreadState(child1);
     launcher.kill(child1);
 
-    child1 = launcher.createChild("cr_sub", 1024*1024);
+    // child1 = launcher.createChild("cr_test", 1024*1024);
+    // timer.msleep(500);
+    // launcher.pushThreadState(child1);
+    // launcher.kill(child1);
+
+    child1 = launcher.createChild("cr_test", 1024*1024);
     timer.msleep(200);
     launcher.popThreadState(child1);
-    timer.msleep(500);
+    timer.msleep(2000);
     launcher.kill(child1);
 
     // if (runs == 3)

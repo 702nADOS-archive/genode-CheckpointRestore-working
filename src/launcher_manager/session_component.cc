@@ -79,7 +79,7 @@ namespace LauncherManager {
     {
       if (child->getId() == process) {
         pushedThreadState = launcher.thread_state(child);
-        Genode::printf("ThreadState: %i\n", pushedThreadState.sp);
+        Genode::printf("ThreadState: %i\n", pushedThreadState.ip);
         // addr_t ip     = 0;   /* instruction pointer */16820189
       	// addr_t sp     = 0;   /* stack pointer       */1074789704
       	// addr_t edi    = 0;

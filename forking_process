@@ -1,0 +1,86 @@
+// Creating the new child
+Genode::addr_t ip              = _sysio->fork_in.ip;
+Genode::addr_t sp              = _sysio->fork_in.sp;
+Genode::addr_t parent_cap_addr = _sysio->fork_in.parent_cap_addr;
+
+int const new_pid = pid_allocator()->alloc();
+
+/*
+* XXX To ease debugging, it would be useful to generate a
+*     unique name that includes the PID instead of just
+*     reusing the name of the parent.
+*/
+Child *child = new Child(_child_policy.name(),
+						this,
+				                _kill_broadcaster,
+				                *this,
+				                new_pid,
+				                _sig_rec,
+				                root_dir(),
+				                _args,
+				                _env.env(),
+				                _cap_session,
+				                _parent_services,
+				                _resources.ep,
+				                true,
+				                env()->heap(),
+				                _destruct_queue,
+				                verbose);
+
+// Inside the child constructor see next section
+Family_member::insert(child);
+_assign_io_channels_to(child);
+/* copy our address space into the new child */
+_resources.rm.replay(child->ram(), child->rm(), child->ds_registry(), _resources.ep);
+
+/* start execution thread of the new process */
+child->start_forked_main_thread(ip, sp, parent_cap_addr);
+
+/* activate child entrypoint, thereby starting the new process */
+child->start();
+
+_sysio->fork_out.pid = new_pid;
+
+
+
+// Inside Child section
+
+
+_child(forked ? Dataspace_capability() : _elf._binary_ds,
+_pd.cap(), _resources.ram.cap(), _resources.cpu.cap(),
+_resources.rm.cap(), &_entrypoint, &_child_policy,
+/**
+* Override the implicit assignment to _parent_service
+*/
+_local_ram_service, _local_cpu_service, _local_rm_service)
+{
+if (verbose)
+	_args.dump();
+	if (!forked && !_elf._binary_ds.valid()) {
+		PERR("Lookup of executable \"%s\" failed", binary_name);
+		throw Binary_does_not_exist();
+	}
+}
+
+~Child()
+{
+	_sig_rec->dissolve(&_destruct_dispatcher);
+
+	_entrypoint.dissolve(this);
+
+	if (is_init_process(this))
+		init_process_exited(_child_policy.exit_value());
+}
+
+void start() { _entrypoint.activate(); }
+
+void start_forked_main_thread(addr_t ip, addr_t sp, addr_t parent_cap_addr)
+{
+	/* poke parent_cap_addr into child's address space */
+	Capability<Parent> const &cap = _child.parent_cap();
+	Capability<Parent>::Raw   raw = { cap.dst(), cap.local_name() };
+	_resources.rm.poke(parent_cap_addr, &raw, sizeof(raw));
+
+	/* start execution of new main thread at supplied trampoline */
+	_resources.cpu.start_main_thread(ip, sp);
+}

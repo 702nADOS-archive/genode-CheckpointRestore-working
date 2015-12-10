@@ -9,7 +9,7 @@
 #### Genode (skip this if you have Genode already installed)
 First you have to install Genode and its toolchain and its dependecies:
 
-    sudo apt-get install libSDL-dev tclsh expect byacc qemu genisoimage autoconf2.64 autogen bison flex g++ git gperf libxml2-utils subversion xsltproc
+    sudo apt-get install libSDL-dev tclsh expect byacc qemu genisoimage autoconf2.64 autogen bison flex g++ git gperf libxml2-utils subversion xsltproc gawk syslinux-utils yasm iasl
 
 this takes care of the dependencies. Next you will need the genode toolchain to actually build something. Go to http://sourceforge.net/projects/genode/files/genode-toolchain/ and download the toolchain that belongs to the release of Genode that you want to use. Then run:
 

@@ -3,6 +3,11 @@
 
 #include <launcher_manager/session/connection.h>
 
+static jmp_buf fork_jmp_buf;
+static Genode::Capability<Genode::Parent>::Raw new_parent;
+
+extern "C" void stdout_reconnect(); /* provided by 'log_console.cc' */
+
 namespace LauncherManager {
   void checkpoint(void)
   {

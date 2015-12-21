@@ -1,5 +1,6 @@
 #include <base/printf.h>
 #include <timer_session/connection.h>
+#include <launcher_manager/launcher_manager.h>
 
 int main(int argc, char const *argv[]) {
   Genode::printf("Hello world from cr_sub\n");

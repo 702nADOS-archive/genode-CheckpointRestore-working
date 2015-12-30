@@ -55,8 +55,10 @@ void Launcher::init()
   for (unsigned i = 0; names[i]; i++)
     _parent_services.insert(new (Genode::env()->heap()) Genode::Parent_service(names[i]));
 
+  // Does not make sense here since each service needs an entrypoint associated with the child
+  // as well as a seperate registry
   // Add local RM_Service
-  _parent_services.insert(new (Genode::env()->heap()) LauncherManager::Rm_Service(_entrypoint));
+  // _parent_services.insert(new (Genode::env()->heap()) LauncherManager::Rm_Service(_entrypoint));
 }
 
 ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota)

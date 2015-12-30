@@ -20,7 +20,7 @@ ChildProcess::ChildProcess(const char                       *name,
                   _rm(rm),
                   _server(_ram),
                   _pd(pd),
-          				_entrypoint(cap_session, ENTRYPOINT_STACK_SIZE, name, false),
+          				_entrypoint(cap_session, ENTRYPOINT_STACK_SIZE, "lm_process", false),
           				_policy(name, &_server, parent_services, child_services, config_ds, elf_ds, &_entrypoint),
           				_child(elf_ds, pd, ram, cpu, rm, &_entrypoint, &_policy),
                   _id(-1)

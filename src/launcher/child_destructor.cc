@@ -32,6 +32,7 @@ class Child_destructor_thread : Genode::Thread<2*4096>
 				 */
 				try {
 					destroy(_curr_alloc, _curr_child);
+					// _curr_alloc->free(_curr_child, sizeof(ChildProcess));
 				} catch (Genode::Blocking_canceled) {
 					PERR("Suspicious cancellation");
 				}

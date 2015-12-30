@@ -30,10 +30,15 @@ public:
   void thread_state(ChildProcess* child, Genode::Thread_state state);
 
 private:
+
   Genode::Sliced_heap _sliced_heap;
   Genode::Cap_connection _cap_session;
   Genode::Service_registry _parent_services;
   Genode::Service_registry _child_services;
+
+  // Entrypoint used to store locally provided services
+  enum { ENTRYPOINT_STACK_SIZE = 12*1024 };
+  Genode::Rpc_entrypoint _entrypoint;
 };
 
 #endif

@@ -31,8 +31,8 @@ install_config {
 
   <start name="launcher_manager">
      <binary name="launcher_manager"/>
-     <resource name="RAM" quantum="10M"/>
-     <provides><service name="LauncherManager"/></provides>
+     <resource name="RAM" quantum="25M"/>
+     <provides><service name="LM"/></provides>
    </start>
 
   <start name="sudi_test1">
@@ -42,7 +42,7 @@ install_config {
 </config>
 }
 
-build_boot_image "core init timer cr_test cr_sub launcher_manager"
+build_boot_image "core init timer cr_test cr_sub launcher_manager ld.lib.so libc.lib.so libm.lib.so"
 
 append qemu_args "-nographic -m 64"
 

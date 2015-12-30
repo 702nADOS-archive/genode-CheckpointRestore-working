@@ -11,7 +11,7 @@ namespace LauncherManager {
     // typedef Genode::String<64> String;
     typedef Genode::Rpc_in_buffer<64> String;
 
-    static const char *service_name() { return "LauncherManager"; }
+    static const char *service_name() { return "LM"; }
     virtual void say_hello() = 0;
 
     virtual int createChild(String const & filename, unsigned int ram_quota) = 0;

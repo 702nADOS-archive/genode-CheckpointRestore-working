@@ -11,7 +11,7 @@ namespace LauncherManager {
     Connection()
     :
       /* create session */
-      Genode::Connection<LauncherManager::Session>(session("foo, ram_quota=4K")),
+      Genode::Connection<LauncherManager::Session>(session("LM, ram_quota=4K")),
 
       /* initialize RPC interface */
       Session_client(cap()) { }

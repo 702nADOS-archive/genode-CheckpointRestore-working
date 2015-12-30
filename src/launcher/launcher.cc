@@ -17,8 +17,12 @@
 #include <timer_session/connection.h>
 #include <base/service.h>
 
+//Launcher services
+#include <services/rm_service.h>
 
-Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session())
+
+Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session()),
+                      _entrypoint(&_cap_session, ENTRYPOINT_STACK_SIZE, "launcher_services", true)
 {
 
 }
@@ -34,7 +38,12 @@ void Launcher::init()
   static const char *names[] = {
 
     /* core services */
-    "CAP", "RAM", "RM", "PD", "CPU", "IO_MEM", "IO_PORT",
+    "CAP",
+    "RAM",
+    "RM",
+    "PD",
+    "CPU",
+    "IO_MEM", "IO_PORT",
     "IRQ", "ROM", "LOG", "SIGNAL",
 
     /* services expected to got started by init */
@@ -45,6 +54,9 @@ void Launcher::init()
   };
   for (unsigned i = 0; names[i]; i++)
     _parent_services.insert(new (Genode::env()->heap()) Genode::Parent_service(names[i]));
+
+  // Add local RM_Service
+  _parent_services.insert(new (Genode::env()->heap()) LauncherManager::Rm_Service(_entrypoint));
 }
 
 ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota)

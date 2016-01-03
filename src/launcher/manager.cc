@@ -1,4 +1,4 @@
-#include <launcher.h>
+#include <manager.h>
 #include <child_process.h>
 #include "child_destructor.h"
 
@@ -20,19 +20,20 @@
 //Launcher services
 #include <services/rm_service.h>
 
-
-Launcher::Launcher() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session()),
+namespace Launcher
+{
+Manager::Manager() : _sliced_heap(Genode::env()->ram_session(), Genode::env()->rm_session()),
                       _entrypoint(&_cap_session, ENTRYPOINT_STACK_SIZE, "launcher_services", true)
 {
 
 }
 
-Launcher::~Launcher()
+Manager::~Manager()
 {
 
 }
 
-void Launcher::init()
+void Manager::init()
 {
   /* names of services provided by the parent */
   static const char *names[] = {
@@ -58,10 +59,10 @@ void Launcher::init()
   // Does not make sense here since each service needs an entrypoint associated with the child
   // as well as a seperate registry
   // Add local RM_Service
-  _parent_services.insert(new (Genode::env()->heap()) LauncherManager::Rm_Service(_entrypoint));
+  _parent_services.insert(new (Genode::env()->heap()) Rm_Service(_entrypoint));
 }
 
-ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota)
+ChildProcess* Manager::start_child(const char* filename, unsigned int ram_quota)
 {
   if (ram_quota >  Genode::env()->ram_session()->avail()) {
 		PERR("Child's ram quota is higher than our available quota, using available quota");
@@ -169,7 +170,7 @@ ChildProcess* Launcher::start_child(const char* filename, unsigned int ram_quota
   return 0;
 }
 
-void Launcher::single_step(ChildProcess* child, bool step)
+void Manager::single_step(ChildProcess* child, bool step)
 {
   Genode::printf("Step child\n", step);
   Genode::Cpu_session_client client(child->cpu_session_cap());
@@ -177,21 +178,21 @@ void Launcher::single_step(ChildProcess* child, bool step)
 
 }
 
-void Launcher::pause(ChildProcess* child)
+void Manager::pause(ChildProcess* child)
 {
   Genode::printf("Pause child\n");
   Genode::Cpu_session_client client(child->cpu_session_cap());
   client.pause(child->thread_cap());
 }
 
-void Launcher::resume(ChildProcess* child)
+void Manager::resume(ChildProcess* child)
 {
   Genode::printf("Resume child\n");
   Genode::Cpu_session_client client(child->cpu_session_cap());
   client.resume(child->thread_cap());
 }
 
-Genode::Thread_state Launcher::thread_state(ChildProcess* child)
+Genode::Thread_state Manager::thread_state(ChildProcess* child)
 {
   pause(child);
   Genode::Cpu_session_client client(child->cpu_session_cap());
@@ -204,7 +205,7 @@ Genode::Thread_state Launcher::thread_state(ChildProcess* child)
   return state;
 }
 
-void Launcher::thread_state(ChildProcess* child, Genode::Thread_state state)
+void Manager::thread_state(ChildProcess* child, Genode::Thread_state state)
 {
   pause(child);
   Genode::Cpu_session_client client(child->cpu_session_cap());
@@ -212,7 +213,7 @@ void Launcher::thread_state(ChildProcess* child, Genode::Thread_state state)
   resume(child);
 }
 
-ChildProcess* Launcher::clone(ChildProcess* origin)
+ChildProcess* Manager::clone(ChildProcess* origin)
 {
   // go through threads with first then next on cpu session
   Genode::Cpu_session_client client(origin->cpu_session_cap());
@@ -228,7 +229,7 @@ ChildProcess* Launcher::clone(ChildProcess* origin)
   return 0;
 }
 
-void Launcher::kill(ChildProcess* child)
+void Manager::kill(ChildProcess* child)
 {
   Genode::Rm_session_capability   rm_session_cap = child->rm_session_cap();
   Genode::Ram_session_capability ram_session_cap = child->ram_session_cap();
@@ -252,5 +253,7 @@ void Launcher::kill(ChildProcess* child)
 
   //TODO: revoke server from other children so connections to them are closed
 
+
+}
 
 }

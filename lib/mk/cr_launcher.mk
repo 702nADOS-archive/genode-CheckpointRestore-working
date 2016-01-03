@@ -1,5 +1,5 @@
 LIBS   = base
-SRC_CC = 	launcher.cc \
+SRC_CC = 	manager.cc \
 					child_process.cc \
 					child_process_policy.cc \
 					child_destructor.cc \

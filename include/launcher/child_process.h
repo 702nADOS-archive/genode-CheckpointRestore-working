@@ -10,66 +10,71 @@
 
 #include "child_process_policy.h"
 
-class ChildProcess : public Genode::List<ChildProcess>::Element
+namespace Launcher
 {
-  Genode::Rom_session_capability _rom;
-  Genode::Ram_session_capability _ram;
-  Genode::Cpu_session_capability _cpu;
-  Genode::Rm_session_capability  _rm;
-  Genode::Pd_session_capability  _pd;
-  Genode::Server                 _server;
+  class ChildProcess : public Genode::List<ChildProcess>::Element
+  {
+    Genode::Rom_session_capability _rom;
+    Genode::Ram_session_capability _ram;
+    Genode::Cpu_session_capability _cpu;
+    Genode::Rm_session_capability  _rm;
+    Genode::Pd_session_capability  _pd;
+    Genode::Server                 _server;
 
-  /*
-   * Entry point used for serving the parent interface and the
-   * locally provided ROM sessions for the 'config' and 'binary'
-   * files.
-   */
-  enum { ENTRYPOINT_STACK_SIZE = 12*1024 };
-  Genode::Rpc_entrypoint _entrypoint;
 
-  ChildProcessPolicy     _policy;
-  Genode::Child          _child;
 
-  int                    _id;
-public:
-  ChildProcess(const char                       *name,
-                  Genode::Dataspace_capability   elf_ds,
-                  Genode::Pd_session_capability  pd,
-                  Genode::Ram_session_capability ram,
-                  Genode::Cpu_session_capability cpu,
-                  Genode::Rm_session_capability  rm,
-                  Genode::Rom_session_capability rom,
-                  Genode::Cap_session           *cap_session,
-                  Genode::Service_registry      *parent_services,
-                  Genode::Service_registry      *child_services,
-                  Genode::Dataspace_capability   config_ds);
+    /*
+     * Entry point used for serving the parent interface and the
+     * locally provided ROM sessions for the 'config' and 'binary'
+     * files.
+     */
+    enum { ENTRYPOINT_STACK_SIZE = 12*1024 };
+    Genode::Rpc_entrypoint _entrypoint;
 
-  Genode::Rom_session_capability rom_session_cap();
-  Genode::Ram_session_capability ram_session_cap();
-  Genode::Cpu_session_capability cpu_session_cap();
-  Genode::Rm_session_capability  rm_session_cap();
-  Genode::Pd_session_capability  pd_session_cap();
-  Genode::Thread_capability      thread_cap();
+    ChildProcessPolicy     _policy;
+    Genode::Child          _child;
 
-  void start();
+    int                    _id;
+  public:
+    ChildProcess(const char                       *name,
+                    Genode::Dataspace_capability   elf_ds,
+                    Genode::Pd_session_capability  pd,
+                    Genode::Ram_session_capability ram,
+                    Genode::Cpu_session_capability cpu,
+                    Genode::Rm_session_capability  rm,
+                    Genode::Rom_session_capability rom,
+                    Genode::Cap_session           *cap_session,
+                    Genode::Service_registry      *parent_services,
+                    Genode::Service_registry      *child_services,
+                    Genode::Dataspace_capability   config_ds);
 
-  void start_forked_main_thread(Genode::addr_t ip=0, Genode::addr_t sp=0, Genode::addr_t parent_cap_addr=0);
+    Genode::Rom_session_capability rom_session_cap();
+    Genode::Ram_session_capability ram_session_cap();
+    Genode::Cpu_session_capability cpu_session_cap();
+    Genode::Rm_session_capability  rm_session_cap();
+    Genode::Pd_session_capability  pd_session_cap();
+    Genode::Thread_capability      thread_cap();
 
-  void setId(int id);
+    void start();
 
-  int getId();
+    void start_forked_main_thread(Genode::addr_t ip=0, Genode::addr_t sp=0, Genode::addr_t parent_cap_addr=0);
 
-  const char* name() const;
+    void setId(int id);
 
-  const Genode::Server* server() const;
+    int getId();
 
-  Genode::Allocator* heap();
+    const char* name() const;
 
-  void revoke_server(const Genode::Server *server);
+    const Genode::Server* server() const;
 
-  void close(Genode::Session_capability cap);
+    Genode::Allocator* heap();
 
-  void exit();
-};
+    void revoke_server(const Genode::Server *server);
+
+    void close(Genode::Session_capability cap);
+
+    void exit();
+  };
+}
 
 #endif

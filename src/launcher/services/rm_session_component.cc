@@ -1,6 +1,6 @@
 #include <services/rm_session_component.h>
 
-namespace LauncherManager
+namespace Launcher
 {
 
 Rm_session_component::Rm_session_component(//Dataspace_registry & ds_registry,

@@ -6,7 +6,7 @@
 #include <services/rm_service.h>
 #include <services/rm_session_component.h>
 
-namespace LauncherManager
+namespace Launcher
 {
 Rm_Service::Rm_Service(Genode::Rpc_entrypoint &ep)//, Dataspace_registry &ds_registry)
     : Service(Genode::Rm_session::service_name())

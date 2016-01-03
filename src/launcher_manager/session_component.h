@@ -3,10 +3,12 @@
 
 #include <base/rpc_server.h>
 #include <launcher_manager/session.h>
-#include <launcher/launcher.h>
+#include <launcher/manager.h>
 
-class ChildProcess;
-
+namespace Launcher
+{
+  class ChildProcess;
+}
 namespace LauncherManager {
   class Session_component : public Genode::Rpc_object<LauncherManager::Session>
   {
@@ -23,9 +25,9 @@ namespace LauncherManager {
 
       void say_hello();
     protected:
-      Launcher launcher;
+      Launcher::Manager launcher;
 
-      Genode::List<ChildProcess> _children;
+      Genode::List<Launcher::ChildProcess> _children;
       int _nextId;
 
       //pushed thread state

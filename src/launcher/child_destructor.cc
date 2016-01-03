@@ -3,7 +3,8 @@
 #include <child_process.h>
 #include <base/thread.h>
 
-
+namespace Launcher
+{
 class Child_destructor_thread : Genode::Thread<2*4096>
 {
 	private:
@@ -137,4 +138,6 @@ static void destruct_child(Genode::Allocator *alloc, ChildProcess *child,
 		timer = timer_session();
 
 	child_destructor.submit_for_destruction(alloc, child, timer, timeout);
+}
+
 }

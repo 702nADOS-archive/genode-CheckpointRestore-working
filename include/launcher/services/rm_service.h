@@ -1,11 +1,10 @@
 #ifndef _INCLUDE__LAUNCHER_MANAGER_RM_SERVICE_H_
 #define _INCLUDE__LAUNCHER_MANAGER_RM_SERVICE_H_
 
-/* Genode includes */
 #include <base/service.h>
 #include <base/rpc_server.h>
 
-namespace LauncherManager
+namespace Launcher
 {
 
   class Rm_Service : public Genode::Service

@@ -1,5 +1,7 @@
 #include <child_process_policy.h>
 
+namespace Launcher
+{
 ChildProcessPolicy::ChildProcessPolicy(const char                  *name,
                        Genode::Server              *server,
                        Genode::Service_registry    *parent_services,
@@ -111,4 +113,6 @@ void ChildProcessPolicy::unregister_services()
   Genode::Service *rs;
   while ((rs = _child_services->find_by_server(_server)))
     _child_services->remove(rs);
+}
+
 }

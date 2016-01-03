@@ -16,7 +16,7 @@ namespace LauncherManager {
   int Session_component::createChild(String const & filename, unsigned int ram_quota)
   {
     Genode::printf("Ram usage: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->avail());
-    ChildProcess* child = launcher.start_child(filename.string(), ram_quota);
+    Launcher::ChildProcess* child = launcher.start_child(filename.string(), ram_quota);
     _children.insert(child);
     child->setId(_nextId++);
     Genode::printf("Ram usage: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->avail());
@@ -26,7 +26,7 @@ namespace LauncherManager {
   void Session_component::kill(int process)
   {
     Genode::printf("Ram usage: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->avail());
-    ChildProcess* child = _children.first();
+    Launcher::ChildProcess* child = _children.first();
     while(child != NULL)
     {
       if (child->getId() == process) {
@@ -43,7 +43,7 @@ namespace LauncherManager {
   void Session_component::pause(int process)
   {
     Genode::printf("Ram usage: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->avail());
-    ChildProcess* child = _children.first();
+    Launcher::ChildProcess* child = _children.first();
     while(child != NULL)
     {
       if (child->getId() == process) {
@@ -59,7 +59,7 @@ namespace LauncherManager {
   void Session_component::resume(int process)
   {
     Genode::printf("Ram usage: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->avail());
-    ChildProcess* child = _children.first();
+    Launcher::ChildProcess* child = _children.first();
     while(child != NULL)
     {
       if (child->getId() == process) {
@@ -74,7 +74,7 @@ namespace LauncherManager {
 
   void Session_component::pushThreadState(int process)
   {
-    ChildProcess* child = _children.first();
+    Launcher::ChildProcess* child = _children.first();
     while(child != NULL)
     {
       if (child->getId() == process) {
@@ -102,7 +102,7 @@ namespace LauncherManager {
 
   void Session_component::popThreadState(int process)
   {
-    ChildProcess* child = _children.first();
+    Launcher::ChildProcess* child = _children.first();
     while(child != NULL)
     {
       if (child->getId() == process) {

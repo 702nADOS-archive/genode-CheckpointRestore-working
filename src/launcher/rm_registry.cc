@@ -2,7 +2,8 @@
 #include <base/env.h>
 
 #include <rm_registry.h>
-
+namespace Launcher
+{
 Rm_Registry::~Rm_Registry()
 {
   /*
@@ -33,4 +34,6 @@ void Rm_Registry::remove(Rm_Info *info)
 Rm_Info *Rm_Registry::lookup_info(Genode::Dataspace_capability ds_cap)
 {
   return _pool.lookup_and_lock(ds_cap);
+}
+
 }

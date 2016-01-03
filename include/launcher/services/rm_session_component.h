@@ -4,7 +4,7 @@
 #include <rm_session/connection.h>
 #include <base/rpc_server.h>
 
-namespace LauncherManager
+namespace Launcher
 {
   class Rm_session_component : public Genode::Rpc_object<Genode::Rm_session>
   {

@@ -3,6 +3,8 @@
 #include <base/process.h>
 #include <session/capability.h>
 
+namespace Launcher
+{
 ChildProcess::ChildProcess(const char                       *name,
                 Genode::Dataspace_capability   elf_ds,
                 Genode::Pd_session_capability  pd,
@@ -117,4 +119,6 @@ void ChildProcess::close(Genode::Session_capability cap)
 void ChildProcess::exit()
 {
   _child.exit(0);
+}
+
 }

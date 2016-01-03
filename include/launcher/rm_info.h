@@ -4,8 +4,11 @@
 #include <base/object_pool.h>
 #include <dataspace/capability.h>
 
-class Rm_Info : public Genode::Object_pool<Rm_Info>::Entry
+namespace Launcher
 {
+  class Rm_Info : public Genode::Object_pool<Rm_Info>::Entry
+  {
 
-};
+  };
+}
 #endif

@@ -76,6 +76,8 @@ int testShadowCopy()
     if (*src1 == *src2) Genode::printf("ShadowCopy works\n");
     else PERR("ShadowCopy does not work\n");
 
+    Genode::printf("SRC1[%i] - SRC2[%i]\n", *src1, *src2);
+
     //Cleanup
     Genode::env()->rm_session()->detach(src1);
     Genode::env()->rm_session()->detach(src2);

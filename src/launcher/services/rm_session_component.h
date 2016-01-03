@@ -1,8 +1,8 @@
-#include <rm_session/connection.h>
-#include <base/rpc_server.h>
-
 #ifndef _INCLUDE__LAUNCHER_MANAGER_RM_SESSION_COMPONENT_H_
 #define _INCLUDE__LAUNCHER_MANAGER_RM_SESSION_COMPONENT_H_
+
+#include <rm_session/connection.h>
+#include <base/rpc_server.h>
 
 namespace LauncherManager
 {
@@ -12,17 +12,9 @@ namespace LauncherManager
     Genode::Rm_connection _rm;
   public:
     Rm_session_component(//Dataspace_registry & ds_registry,
-		                     Genode::addr_t start = ~0UL, Genode::size_t size = 0)
-		:
-			_rm(start, size)//, _ds_registry(ds_registry)
-		{ }
+		                     Genode::addr_t start = ~0UL, Genode::size_t size = 0);
 
-    ~Rm_session_component()
-		{
-			// Region *curr;
-			// while ((curr = _regions.first()))
-			// 	detach(curr->local_addr);
-		}
+    ~Rm_session_component();
 
     /**
      * Map dataspace into local address space
@@ -47,36 +39,24 @@ namespace LauncherManager
                               Genode::size_t size = 0, Genode::off_t offset = 0,
                               bool use_local_addr = false,
                               Local_addr local_addr = (void *)0,
-                              bool executable = false)
-    {
-      return _rm.attach(ds, size, offset, use_local_addr, local_addr, executable);
-    }
+                              bool executable = false);
 
     /**
      * Shortcut for attaching a dataspace at a predefined local address
      */
     Local_addr attach_at(Genode::Dataspace_capability ds, Genode::addr_t local_addr,
-                         Genode::size_t size = 0, Genode::off_t offset = 0)
-    {
-      return attach(ds, size, offset, true, local_addr);
-    }
+                         Genode::size_t size = 0, Genode::off_t offset = 0);
 
     /**
      * Shortcut for attaching a dataspace executable at a predefined local address
      */
     Local_addr attach_executable(Genode::Dataspace_capability ds, Genode::addr_t local_addr,
-                                 Genode::size_t size = 0, Genode::off_t offset = 0)
-    {
-      return attach(ds, size, offset, true, local_addr, true);
-    }
+                                 Genode::size_t size = 0, Genode::off_t offset = 0);
 
     /**
      * Remove region from local address space
      */
-    void detach(Local_addr local_addr)
-    {
-      _rm.detach(local_addr);
-    }
+    void detach(Local_addr local_addr);
 
     /**
      * Add client to pager
@@ -91,20 +71,14 @@ namespace LauncherManager
      * communication channel between the pager part of the region manager
      * and the client thread.
      */
-    Genode::Pager_capability add_client(Genode::Thread_capability thread)
-    {
-      return _rm.add_client(thread);
-    }
+    Genode::Pager_capability add_client(Genode::Thread_capability thread);
 
     /**
      * Remove client from pager
      *
      * \param pager  pager capability of client to be removed
      */
-    void remove_client(Genode::Pager_capability p_cap)
-    {
-      _rm.remove_client(p_cap);
-    }
+    void remove_client(Genode::Pager_capability p_cap);
 
     /**
      * Register signal handler for region-manager faults
@@ -114,26 +88,17 @@ namespace LauncherManager
      * unresolvable page faults (traditionally called segmentation fault)
      * will result in the delivery of the signal.
      */
-    void fault_handler(Genode::Signal_context_capability handler)
-    {
-      _rm.fault_handler(handler);
-    }
+    void fault_handler(Genode::Signal_context_capability handler);
 
     /**
      * Request current state of RM session
      */
-    State state()
-    {
-      return _rm.state();
-    }
+    State state();
 
     /**
      * Return dataspace representation of region-manager session
      */
-    Genode::Dataspace_capability dataspace()
-    {
-      return _rm.dataspace();
-    }
+    Genode::Dataspace_capability dataspace();
 
   };
 }

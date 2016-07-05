@@ -31,15 +31,13 @@
 #include <timer_session/connection.h>
 #include <launcher_manager/session/connection.h>
 
-#define PRINT_STUFF Genode::printf("Hello world from sudi_test: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->quota());
+#define PRINT_STUFF Genode::printf("Hello world from test: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->quota());
 
 int main(int argc, char const *argv[])
 {
   LauncherManager::Connection launcher;
   launcher.say_hello();
-
   Timer::Connection timer;
-
   int child = 0;//launcher.createChild("cr_sub", 1024*1024*5);
 
   bool paused = false;
@@ -48,6 +46,7 @@ int main(int argc, char const *argv[])
   while (1)
   {
     PRINT_STUFF
+    
     // timer.msleep(200);
     // if (runs%2 == 0) {
     //   child = launcher.createChild("cr_sub", 1024*1024);

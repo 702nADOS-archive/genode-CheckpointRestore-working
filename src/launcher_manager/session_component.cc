@@ -20,6 +20,7 @@ namespace LauncherManager {
     _children.insert(child);
     child->setId(_nextId++);
     Genode::printf("Ram usage: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->avail());
+    Genode::printf("Child ID: %i\n", child->getId());
     return child->getId();
   }
 
@@ -79,7 +80,25 @@ namespace LauncherManager {
     {
       if (child->getId() == process) {
         pushedThreadState = launcher.thread_state(child);
-        Genode::printf("ThreadState: %i\n", pushedThreadState.sp);
+
+        Genode::printf("Register ip: %i\n", pushedThreadState.ip);
+        Genode::printf("Register sp: %i\n", pushedThreadState.sp);
+        Genode::printf("Register r0: %i\n", pushedThreadState.r0);
+        Genode::printf("Register r1: %i\n", pushedThreadState.r1);
+        Genode::printf("Register r2: %i\n", pushedThreadState.r2);
+        Genode::printf("Register r3: %i\n", pushedThreadState.r3);
+        Genode::printf("Register r4: %i\n", pushedThreadState.r4);
+        Genode::printf("Register r5: %i\n", pushedThreadState.r5);
+        Genode::printf("Register r6: %i\n", pushedThreadState.r6);
+        Genode::printf("Register r7: %i\n", pushedThreadState.r7);
+        Genode::printf("Register r8: %i\n", pushedThreadState.r8);
+        Genode::printf("Register r9: %i\n", pushedThreadState.r9);
+        Genode::printf("Register r10: %i\n", pushedThreadState.r10);
+        Genode::printf("Register r11: %i\n", pushedThreadState.r11);
+        Genode::printf("Register r12: %i\n", pushedThreadState.r12);
+        Genode::printf("Register lr: %i\n", pushedThreadState.lr);
+        Genode::printf("Register cpsr: %i\n", pushedThreadState.cpsr);
+
         // addr_t ip     = 0;   /* instruction pointer */16820189
       	// addr_t sp     = 0;   /* stack pointer       */1074789704
       	// addr_t edi    = 0;
@@ -106,6 +125,27 @@ namespace LauncherManager {
     while(child != NULL)
     {
       if (child->getId() == process) {
+
+        pushedThreadState = launcher.thread_state(child);
+
+        Genode::printf("Register ip: %i\n", pushedThreadState.ip);
+        Genode::printf("Register sp: %i\n", pushedThreadState.sp);
+        Genode::printf("Register r0: %i\n", pushedThreadState.r0);
+        Genode::printf("Register r1: %i\n", pushedThreadState.r1);
+        Genode::printf("Register r2: %i\n", pushedThreadState.r2);
+        Genode::printf("Register r3: %i\n", pushedThreadState.r3);
+        Genode::printf("Register r4: %i\n", pushedThreadState.r4);
+        Genode::printf("Register r5: %i\n", pushedThreadState.r5);
+        Genode::printf("Register r6: %i\n", pushedThreadState.r6);
+        Genode::printf("Register r7: %i\n", pushedThreadState.r7);
+        Genode::printf("Register r8: %i\n", pushedThreadState.r8);
+        Genode::printf("Register r9: %i\n", pushedThreadState.r9);
+        Genode::printf("Register r10: %i\n", pushedThreadState.r10);
+        Genode::printf("Register r11: %i\n", pushedThreadState.r11);
+        Genode::printf("Register r12: %i\n", pushedThreadState.r12);
+        Genode::printf("Register lr: %i\n", pushedThreadState.lr);
+        Genode::printf("Register cpsr: %i\n", pushedThreadState.cpsr);
+
         launcher.thread_state(child, pushedThreadState);
         child = NULL;
       } else {
@@ -118,4 +158,5 @@ namespace LauncherManager {
   {
     PDBG("I am here... Hello.");
   }
+
 }

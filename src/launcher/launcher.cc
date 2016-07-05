@@ -165,9 +165,9 @@ void Launcher::single_step(ChildProcess* child, bool step)
 
 void Launcher::pause(ChildProcess* child)
 {
-  Genode::printf("Pause child\n");
   Genode::Cpu_session_client client(child->cpu_session_cap());
   client.pause(child->thread_cap());
+  Genode::printf("Pause child\n");
 }
 
 void Launcher::resume(ChildProcess* child)

@@ -42,6 +42,7 @@ int main(int argc, char const *argv[])
 
   bool paused = false;
   int runs = 0;
+  bool migration = false;
 
   while (1)
   {
@@ -53,7 +54,26 @@ int main(int argc, char const *argv[])
     // } else if (runs%3 == 0) {
     //   launcher.kill(child);
     // }
+
+    if (migration)
+    {
+      int child1 = launcher.createChild("cr_sub", 1024*1024);
+      timer.msleep(500);
+      launcher.pushThreadState(child1);
+      launcher.kill(child1);
+
+      Genode::printf("DEBUG CHILD2");
+      int child2 = launcher.createChild("cr_sub2", 1024*1024);
+      timer.msleep(500);
+      launcher.popThreadState(child2);
+      timer.msleep(500);
+      launcher.kill(child2);
+    }
+
+    else
+    {
     int child1 = launcher.createChild("cr_sub", 1024*1024);
+    //int child2 = launcher.createChild("cr_sub2", 1024*1024);
     timer.msleep(500);
     launcher.pushThreadState(child1);
     launcher.kill(child1);
@@ -63,6 +83,7 @@ int main(int argc, char const *argv[])
     launcher.popThreadState(child1);
     timer.msleep(500);
     launcher.kill(child1);
+    }
 
     // if (runs == 3)
     // {

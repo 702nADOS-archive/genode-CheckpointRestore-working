@@ -1,6 +1,9 @@
 #include "session_component.h"
 #include <launcher/child_process.h>
 #include <base/printf.h>
+#include <base/sleep.h>
+#include <timer_session/connection.h>
+#include <launcher_manager/session/connection.h>
 
 namespace LauncherManager {
   Session_component::Session_component()
@@ -81,6 +84,8 @@ namespace LauncherManager {
     while(child != NULL)
     {
       if (child->getId() == process) {
+
+        Timer::Connection timer;
         pushedThreadState = launcher.thread_state(child);
         ip = pushedThreadState.ip;
         Genode::printf("Register ip (push): %i\n", pushedThreadState.ip);

@@ -17,7 +17,7 @@ int fib(int n)
   }
   else
   {
-    for (int i = 2; i < n; n++)
+    for (int i = 2; i < n; i++)
     {
       result = first + second;
       first = second;
@@ -44,10 +44,10 @@ int main(int argc, char const *argv[]) {
 //  Timer::Connection timer;
 //  int counter = 0;
 
-  // int fib_result = fib(10);
-  // Genode::printf("Fib(10): %i\n", fib_result);
+  int fib_result = fib(10);
+  Genode::printf("Fib(10): %i\n", fib_result);
 
-  test_print();
+  //test_print();
 
 //  while(1)
 //  {

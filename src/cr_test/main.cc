@@ -33,6 +33,54 @@
 
 #define PRINT_STUFF Genode::printf("Hello world from test: %i/%i\n", Genode::env()->ram_session()->used(), Genode::env()->ram_session()->quota());
 
+int testShadowCopy()
+{
+  try
+  {
+    Genode::Dataspace_capability dataspace1 = Genode::env()->ram_session()->alloc(4);
+    Genode::Dataspace_capability dataspace2 = Genode::env()->ram_session()->alloc(4);
+
+    int *src1 = Genode::env()->rm_session()->attach(dataspace1);
+    int *src2 = 0;
+    try
+    {
+      src2 = Genode::env()->rm_session()->attach(dataspace2, 0, 0, true, src1);
+
+      *src1 = 4;
+      if (*src1 == *src2) Genode::printf("ShadowCopy works\n");
+      else PERR("ShadowCopy does not work\n");
+
+      Genode::printf("SRC1[%i] - SRC2[%i]\n", *src1, *src2);
+    } catch(Genode::Rm_session::Invalid_args attach_failed)
+    {
+      PERR("Attach failed: invalid args\n");
+    } catch(Genode::Rm_session::Invalid_dataspace attach_failed)
+    {
+      PERR("Attach failed: invalid dataspace\n");
+    } catch(Genode::Rm_session::Region_conflict attach_failed)
+    {
+      PERR("Attach failed: region conflict\n");
+      PERR("ShadowCopy is impossible\n");
+    } catch(Genode::Rm_session::Out_of_metadata attach_failed)
+    {
+      PERR("Attach failed: out of metadata\n");
+    }
+
+    //Cleanup
+    Genode::env()->rm_session()->detach(src1);
+    Genode::env()->rm_session()->detach(src2);
+    Genode::env()->ram_session()->free(dataspace1);
+    Genode::env()->ram_session()->free(dataspace2);
+  } catch(Genode::Ram_session::Alloc_failed alloc_failed) {
+    PERR("Alloc failed\n");
+  } catch(Genode::Ram_session::Quota_exceeded alloc_failed) {
+    PERR("Quota exceeded\n");
+  } catch(Genode::Ram_session::Out_of_metadata alloc_failed) {
+    PERR("out of metadata\n");
+  }
+  return 0;
+}
+
 int main(int argc, char const *argv[])
 {
   LauncherManager::Connection launcher;
@@ -47,7 +95,7 @@ int main(int argc, char const *argv[])
   while (1)
   {
     PRINT_STUFF
-    
+
     // timer.msleep(200);
     // if (runs%2 == 0) {
     //   child = launcher.createChild("cr_sub", 1024*1024);
